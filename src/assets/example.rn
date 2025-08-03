@@ -1,0 +1,58 @@
+struct Point {
+    long x;
+    long y;
+}
+
+fn distance_squared(Point p): long {
+    return p.x * p.x + p.y * p.y;
+}
+
+fn scale_point(Point p, long factor) {
+    p.x *= factor;
+    p.y *= factor;
+}
+
+fn power(long base, long exp): long {
+    long result = 1i64;
+
+    for (long i = 0i64; i < exp; i++) {
+        result *= base;
+    }
+    return result;
+}
+
+fn classify(long d): string {
+    return d == 0i64 ? "origin"
+         : d < 25i64 ? "near"
+         : d < 100i64 ? "medium"
+         : "far";
+}
+
+fn main() {
+    Point p;
+    p.x = 2i64;
+    p.y = 3i64;
+
+    print($"Original point: ({p.x}, {p.y})");
+
+    scale_point(p, 3i64);
+    print($"Scaled point: ({p.x}, {p.y})");
+
+    long d = distance_squared(p);
+    print($"Distance squared = {d} -> {classify(d)}");
+
+    long base = 2i64;
+    long exp = 6i64;
+    long pow = power(base, exp);
+    print($"Power: {base} ** {exp} = {pow}");
+
+    int acc = 5;
+    acc += 3;
+    acc *= 2;
+    acc -= 4;
+    print($"Accumulator result = {acc}");
+
+    int x = 10;
+    int y = 15;
+    print(x > y ? "x is greater" : "y is greater or equal");
+}
