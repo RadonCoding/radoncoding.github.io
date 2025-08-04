@@ -23,6 +23,7 @@ import type { FixExpression } from "./FixExpression";
 import type { UnaryExpression } from "./UnaryExpression";
 
 export const NodeKinds = {
+  STRUCT_DECLARATION: "StructDeclaration",
   STRUCT_EXPRESSION: "StructExpression",
   FIELD_DECLARATION: "FieldDeclaration",
   FIELD_ASSIGNMENT: "FieldAssignment",
