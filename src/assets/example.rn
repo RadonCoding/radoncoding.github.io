@@ -3,8 +3,15 @@ struct Point {
     long y;
 }
 
-fn distance_squared(Point p): long {
-    return p.x * p.x + p.y * p.y;
+struct Rectangle {
+    Point top_left;
+    Point bottom_right;
+}
+
+fn distance_squared(Point p1, Point p2): long {
+    long dx = p1.x - p2.x;
+    long dy = p1.y - p2.y;
+    return dx * dx + dy * dy;
 }
 
 fn scale_point(Point p, long factor) {
@@ -12,47 +19,114 @@ fn scale_point(Point p, long factor) {
     p.y *= factor;
 }
 
+fn factorial(long n): long {
+    if n <= 1i64 {
+        return 1i64;
+    } else {
+        return n * factorial(n - 1i64);
+    }
+}
+
 fn power(long base, long exp): long {
     long result = 1i64;
-
     for (long i = 0i64; i < exp; i++) {
         result *= base;
     }
     return result;
 }
 
-fn classify(long d): string {
+fn classify_distance(long d): string {
     return d == 0i64 ? "origin"
-         : d < 25i64 ? "near"
-         : d < 100i64 ? "medium"
-         : "far";
+         : d < 25i64 ? "very close"
+         : d < 100i64 ? "close" 
+         : d < 400i64 ? "medium"
+         : d < 1000i64 ? "far"
+         : "very far";
+}
+
+fn compare_numbers(long a, long b): string {
+    if a == b return "equal";
+    if a != b && a > b return "a greater";
+    if a < b return "a smaller";
+    if a >= b return "a greater or equal";
+    if a <= b return "a smaller or equal";
+    return "unknown";
+}
+
+fn accumulate_ops(int start): int {
+    int result = start;
+    result += 10;
+    result -= 3;
+    result *= 2;
+    result /= 4;
+    result %= 7;
+    result **= 2;
+    return result;
+}
+
+fn increment_demo(): long {
+    long counter = 0i64;
+    counter++;
+    ++counter;
+    counter--;
+    --counter;
+    return counter;
+}
+
+fn area_calculator(Rectangle rect): long {
+    Point tl = rect.top_left;
+    Point br = rect.bottom_right;
+    long width = br.x - tl.x;
+    long height = br.y - tl.y;
+    return width * height;
 }
 
 fn main() {
-    Point p;
-    p.x = 2i64;
-    p.y = 3i64;
+    Point p1;
+    p1.x = 3i64;
+    p1.y = 4i64;
+    
+    Point p2;
+    p2.x = 6i64;
+    p2.y = 8i64;
+    
+    print($"Point 1: ({p1.x}, {p1.y})");
+    print($"Point 2: ({p2.x}, {p2.y})");
+    
+    long dist = distance_squared(p1, p2);
+    print($"Distance squared: {dist}");
+    print($"Classification: {classify_distance(dist)}");
+    
+    scale_point(p1, 2i64);
+    print($"Scaled point 1: ({p1.x}, {p1.y})");
+    
+    Rectangle rect;
+    rect.top_left = p2;
 
-    print($"Original point: ({p.x}, {p.y})");
-
-    scale_point(p, 3i64);
-    print($"Scaled point: ({p.x}, {p.y})");
-
-    long d = distance_squared(p);
-    print($"Distance squared = {d} -> {classify(d)}");
-
-    long base = 2i64;
-    long exp = 6i64;
-    long pow = power(base, exp);
-    print($"Power: {base} ** {exp} = {pow}");
-
-    int acc = 5;
-    acc += 3;
-    acc *= 2;
-    acc -= 4;
-    print($"Accumulator result = {acc}");
-
-    int x = 10;
-    int y = 15;
-    print(x > y ? "x is greater" : "y is greater or equal");
+    Point bottom_right;
+    bottom_right.x = 10i64;
+    bottom_right.y = 12i64;
+    rect.bottom_right = bottom_right;
+    
+    long area = area_calculator(rect);
+    print($"Rectangle area: {area}");
+    
+    long fact5 = factorial(5i64);
+    print($"5! = {fact5}");
+    
+    long pow_result = power(2i64, 8i64);
+    print($"2^8 = {pow_result}");
+    
+    int acc_result = accumulate_ops(5);
+    print($"Accumulator result: {acc_result}");
+    
+    long inc_result = increment_demo();
+    print($"Increment demo result: {inc_result}");
+    
+    string comparison = compare_numbers(15i64, 10i64);
+    print($"15 vs 10: {comparison}");
+    
+    int x = 42;
+    int y = 37;
+    print(x > y ? $"{x} is greater" : $"{y} is greater or equal");
 }

@@ -187,8 +187,6 @@ export class Compiler {
 
     const wat = this.#wat.join("\n");
 
-    console.log(wat);
-
     const module = await wabt();
     const parsed = module.parseWat("module.wat", wat);
     const { buffer } = parsed.toBinary({ log: true });
@@ -1175,8 +1173,9 @@ export class Compiler {
         const type = this.#getExpressionResultType(node.left);
 
         switch (node.operator) {
-          case TokenTypes.NOT_EQUALS:
+          case TokenTypes.AND:
           case TokenTypes.EQUALS:
+          case TokenTypes.NOT_EQUALS:
           case TokenTypes.LTE:
           case TokenTypes.GTE:
           case TokenTypes.LT:

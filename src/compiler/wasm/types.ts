@@ -20,6 +20,9 @@ export const WASM_TYPES: Record<ValidTypeKind, string> = {
 export const WASM_BINARY_OPERATIONS: Partial<
   Record<TypeKind, Partial<Record<BinaryOperator, string>>>
 > = {
+  [TypeKinds.BOOL]: {
+    [TokenTypes.AND]: "i32.and",
+  },
   [TypeKinds.INT]: {
     [TokenTypes.EQUALS]: "i32.eq",
     [TokenTypes.NOT_EQUALS]: "i32.ne",

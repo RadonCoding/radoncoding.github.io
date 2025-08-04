@@ -104,7 +104,12 @@ export function showErrorTooltip(
   let node: Node | null;
 
   while ((node = walker.nextNode())) {
-    if (node.nodeType !== Node.TEXT_NODE) continue;
+    if (node.nodeType !== Node.TEXT_NODE) {
+      if (node.nodeName === "BR") {
+        current++;
+      }
+      continue;
+    }
 
     const length = node.textContent?.length || 0;
 

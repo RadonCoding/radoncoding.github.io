@@ -1,18 +1,19 @@
 import { TokenTypes } from "../tokens";
 
 export const BinaryOperators = {
-  [TokenTypes.EQUALS]: { precedence: 1, associativity: "left" },
-  [TokenTypes.NOT_EQUALS]: { precedence: 1, associativity: "left" },
-  [TokenTypes.LTE]: { precedence: 1, associativity: "left" },
-  [TokenTypes.GTE]: { precedence: 1, associativity: "left" },
-  [TokenTypes.LT]: { precedence: 1, associativity: "left" },
-  [TokenTypes.GT]: { precedence: 1, associativity: "left" },
-  [TokenTypes.PLUS]: { precedence: 2, associativity: "left" },
-  [TokenTypes.MINUS]: { precedence: 2, associativity: "left" },
-  [TokenTypes.POW]: { precedence: 4, associativity: "right" },
-  [TokenTypes.MUL]: { precedence: 3, associativity: "left" },
-  [TokenTypes.DIV]: { precedence: 3, associativity: "left" },
-  [TokenTypes.MOD]: { precedence: 3, associativity: "left" },
+  [TokenTypes.AND]: { precedence: 1, associativity: "left" },
+  [TokenTypes.EQUALS]: { precedence: 2, associativity: "left" },
+  [TokenTypes.NOT_EQUALS]: { precedence: 2, associativity: "left" },
+  [TokenTypes.LT]: { precedence: 3, associativity: "left" },
+  [TokenTypes.GT]: { precedence: 3, associativity: "left" },
+  [TokenTypes.LTE]: { precedence: 3, associativity: "left" },
+  [TokenTypes.GTE]: { precedence: 3, associativity: "left" },
+  [TokenTypes.PLUS]: { precedence: 4, associativity: "left" },
+  [TokenTypes.MINUS]: { precedence: 4, associativity: "left" },
+  [TokenTypes.MUL]: { precedence: 5, associativity: "left" },
+  [TokenTypes.DIV]: { precedence: 5, associativity: "left" },
+  [TokenTypes.MOD]: { precedence: 5, associativity: "left" },
+  [TokenTypes.POW]: { precedence: 6, associativity: "right" },
 } as const;
 
 export interface BinaryOperatorInfo {

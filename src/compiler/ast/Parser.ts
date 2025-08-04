@@ -349,9 +349,12 @@ export class Parser {
     if (next.type === TokenTypes.IDENTIFIER) {
       if (this.#peek(1)?.type === TokenTypes.LPAREN) {
         return this.#parseCallExpression();
-      } else if (this.#peek(1)?.type === TokenTypes.DOT) {
+      }
+
+      if (this.#peek(1)?.type === TokenTypes.DOT) {
         return this.#parseFieldExpression();
       }
+
       return this.#parseIdentifier();
     }
 
@@ -573,6 +576,14 @@ export class Parser {
     return statements;
   }
 
+  #parseStatementOrBlock() {
+    if (this.#peek()?.type === TokenTypes.LBRACE) {
+      return this.#parseBlock();
+    } else {
+      return [this.#parseStatement()];
+    }
+  }
+
   #parseFields() {
     this.#consume(TokenTypes.LBRACE);
 
@@ -635,7 +646,7 @@ export class Parser {
   #parseIfStatement(): IfStatement {
     const token = this.#consume(TokenTypes.IF);
     const condition = this.parseExpression();
-    const consequent = this.#parseBlock();
+    const consequent = this.#parseStatementOrBlock();
 
     let alternate = null;
 
@@ -645,7 +656,7 @@ export class Parser {
       if (this.#peek()?.type === TokenTypes.IF) {
         alternate = this.#parseIfStatement();
       } else {
-        alternate = this.#parseBlock();
+        alternate = this.#parseStatementOrBlock();
       }
     }
     return new IfStatement(condition, consequent, alternate, token.start);
@@ -675,7 +686,7 @@ export class Parser {
     }
     this.#consume(TokenTypes.RPAREN);
 
-    const body = this.#parseBlock();
+    const body = this.#parseStatementOrBlock();
 
     return new LoopStatement(declaration, condition, step, body, token.start);
   }
@@ -701,17 +712,25 @@ export class Parser {
     if (next.type === TokenTypes.IDENTIFIER) {
       if (this.#peek(1)?.type === TokenTypes.IDENTIFIER) {
         return this.#parseVariableDeclaration();
-      } else if (
+      }
+
+      if (
         this.#peek(1)?.type === TokenTypes.DOT &&
         this.#peek(2)?.type === TokenTypes.IDENTIFIER &&
         this.#peek(3)?.type === TokenTypes.EQUAL
       ) {
         return this.#parseFieldAssignment();
-      } else if (this.#peek(1)?.type === TokenTypes.EQUAL) {
+      }
+
+      if (this.#peek(1)?.type === TokenTypes.EQUAL) {
         return this.#parseVariableAssignment();
-      } else if (isCompoundOperator(this.#peek(1)?.type)) {
+      }
+
+      if (isCompoundOperator(this.#peek(1)?.type)) {
         return this.#parseCompoundVariableAssignment();
-      } else if (
+      }
+
+      if (
         this.#peek(1)?.type === TokenTypes.DOT &&
         this.#peek(2)?.type === TokenTypes.IDENTIFIER &&
         isCompoundOperator(this.#peek(3)?.type)
