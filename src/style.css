@@ -56,9 +56,8 @@ main {
 }
 
 .profile {
-  max-width: 100%;
+  width: clamp(15rem, 12rem + 12.5vw, 22.5rem);
   height: auto;
-  display: block;
 }
 
 .details {
