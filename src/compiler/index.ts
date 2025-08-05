@@ -28,8 +28,6 @@ async function compile() {
     const parser = new Parser(tokens);
     const ast = parser.parse();
 
-    console.log(ast);
-
     const compiler = new Compiler();
     const wasm = await compiler.compile(ast);
 
