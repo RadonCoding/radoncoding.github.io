@@ -29,6 +29,7 @@ fn factorial(long n): long {
 
 fn power(long base, long exp): long {
     long result = 1i64;
+    
     for (long i = 0i64; i < exp; i++) {
         result *= base;
     }
