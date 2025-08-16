@@ -145,13 +145,11 @@ export class Parser {
     const parts = [];
 
     const start = token.start + 2;
-
     let index = 0;
 
     while (index < text.length) {
       const char = text[index];
 
-      // Handle escaped opening braces
       if (char === "{") {
         let brace = index;
         let count = 0;
@@ -162,16 +160,13 @@ export class Parser {
         }
 
         if (count % 2 === 0) {
-          // Even number - literal { characters
           parts.push(
             new StringLiteral("{".repeat(count / 2), start + brace + 1)
           );
           continue;
         }
 
-        // Odd count - must be interpolation
-        const inteprolation = index;
-
+        const interpolation = index;
         let depth = 1;
 
         while (index < text.length && depth > 0) {
@@ -184,7 +179,7 @@ export class Parser {
           throw new InvalidSyntaxError("Unclosed interpolation", start + brace);
         }
 
-        const interpolated = text.slice(inteprolation, index - 1).trim();
+        const interpolated = text.slice(interpolation, index - 1).trim();
 
         if (interpolated.length === 0) {
           throw new InvalidSyntaxError("Empty interpolation", start + brace);
@@ -199,7 +194,7 @@ export class Parser {
           specifier === -1 ? null : interpolated.slice(specifier + 1).trim();
 
         const tokens = tokenize(expression, {
-          offset: start + inteprolation,
+          offset: start + interpolation,
         });
         const parser = new Parser(tokens);
         const part = parser.parseExpression();
@@ -210,22 +205,22 @@ export class Parser {
           if (!format) {
             throw new InvalidSyntaxError(
               `Invalid format "${value}"`,
-              start + inteprolation + specifier + 1
+              start + interpolation + specifier + 1
             );
           }
 
           parts.push(
-            new FormattedExpression(part, format, start + inteprolation)
+            new FormattedExpression(part, format, start + interpolation)
           );
         } else {
           parts.push(part);
         }
+
         continue;
       }
 
-      // Handle escaped closing braces
       if (char === "}") {
-        let braceStart = index;
+        let brace = index;
         let count = 0;
         while (text[index] === "}") {
           count++;
@@ -233,24 +228,18 @@ export class Parser {
         }
 
         if (count % 2 === 0) {
-          // Even number: literal } characters
           parts.push(
-            new StringLiteral(
-              "}".repeat(count / 2),
-              token.start + braceStart + 1
-            )
+            new StringLiteral("}".repeat(count / 2), token.start + brace + 1)
           );
           continue;
         }
 
-        // Odd number of closing braces with no matching opening
         throw new InvalidSyntaxError(
           "Unmatched closing brace",
-          token.start + braceStart + 1
+          token.start + brace + 1
         );
       }
 
-      // Handle literals until next brace
       const literal = index;
 
       while (
@@ -260,13 +249,13 @@ export class Parser {
       ) {
         index++;
       }
-
       if (index > literal) {
         parts.push(
           new StringLiteral(text.slice(literal, index), start + literal + 1)
         );
       }
     }
+
     return new InterpolatedString(parts, token.start);
   }
 
