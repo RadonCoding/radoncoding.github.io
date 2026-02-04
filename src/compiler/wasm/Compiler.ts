@@ -139,7 +139,7 @@ export class Compiler {
 
       this.#block("(func $__init_heap", () => {
         this.#write(
-          `(global.set $__next_free_address (i32.const ${this.#offset}))`
+          `(global.set $__next_free_address (i32.const ${this.#offset}))`,
         );
       });
 
@@ -155,7 +155,7 @@ export class Compiler {
           ) {
             throw new CompilerError(
               `Struct "${node.name}" has already been declared`,
-              node.offset
+              node.offset,
             );
           }
         }
@@ -172,7 +172,7 @@ export class Compiler {
           ) {
             throw new CompilerError(
               `Function "${node.name}" has already been declared`,
-              node.offset
+              node.offset,
             );
           }
         }
@@ -291,7 +291,7 @@ export class Compiler {
     if (!operation) {
       throw new CompilerError(
         `Type mismatch for "${operator}" operator: ${type.kind}`,
-        offset
+        offset,
       );
     }
     this.#write(`(${operation})`);
@@ -303,7 +303,7 @@ export class Compiler {
     if (!operation) {
       throw new CompilerError(
         `Type mismatch for "${operator}" operator: ${type.kind}`,
-        offset
+        offset,
       );
     }
     this.#write(`(${operation})`);
@@ -324,7 +324,7 @@ export class Compiler {
       if (!decl) {
         throw new CompilerError(
           `Invalid type "${param.type.kind}" for parameter declaration`,
-          param.offset
+          param.offset,
         );
       }
 
@@ -350,7 +350,7 @@ export class Compiler {
     if (hasResult && !resultPart) {
       throw new CompilerError(
         `Invalid type "${node.type}" for return type`,
-        node.offset
+        node.offset,
       );
     }
 
@@ -372,7 +372,7 @@ export class Compiler {
         if (!decl) {
           throw new CompilerError(
             `Invalid type "${local.type}" for variable declaration`,
-            local.offset
+            local.offset,
           );
         }
         this.#write(`(local ${decl})`, start);
@@ -403,7 +403,7 @@ export class Compiler {
       const all = branches.every(
         (branch) =>
           branch.length > 0 &&
-          branch.every((child) => this.#collectReturns(child))
+          branch.every((child) => this.#collectReturns(child)),
       );
       this.#returns.set(node.offset, all);
       return all;
@@ -447,7 +447,7 @@ export class Compiler {
       default:
         throw new CompilerError(
           `Invalid node type for statement: ${node.kind}`,
-          node.offset
+          node.offset,
         );
     }
   }
@@ -472,7 +472,7 @@ export class Compiler {
     if (!struct) {
       throw new CompilerError(
         `Struct definition for "${symbol.type.name}" not found`,
-        offset
+        offset,
       );
     }
 
@@ -481,7 +481,7 @@ export class Compiler {
     if (!field) {
       throw new CompilerError(
         `Field "${member}" not found in struct "${struct.name}"`,
-        offset
+        offset,
       );
     }
 
@@ -502,7 +502,7 @@ export class Compiler {
     if (!this.#scope) {
       throw new CompilerError(
         "No active scope for return statement compilation",
-        node.offset
+        node.offset,
       );
     }
 
@@ -511,7 +511,7 @@ export class Compiler {
     if (!func) {
       throw new CompilerError(
         "Return statement outside of a function",
-        node.offset
+        node.offset,
       );
     }
 
@@ -522,7 +522,7 @@ export class Compiler {
     if (type !== func.type) {
       throw new CompilerError(
         `Return type mismatch in function "${func.name}": expected ${func.type.kind}, got ${type.kind}`,
-        node.offset
+        node.offset,
       );
     }
 
@@ -536,7 +536,7 @@ export class Compiler {
     if (!this.#scope) {
       throw new CompilerError(
         "No active scope for if statement compilation",
-        node.offset
+        node.offset,
       );
     }
 
@@ -545,7 +545,7 @@ export class Compiler {
     if (!func) {
       throw new CompilerError(
         "If statement outside of a function",
-        node.offset
+        node.offset,
       );
     }
 
@@ -554,7 +554,7 @@ export class Compiler {
     if (condition !== BuiltInTypes.bool) {
       throw new CompilerError(
         `Invalid type "${condition}" as conditional expression`,
-        node.condition.offset
+        node.condition.offset,
       );
     }
 
@@ -592,7 +592,7 @@ export class Compiler {
     if (!this.#scope) {
       throw new CompilerError(
         "No active scope for if statement compilation",
-        node.offset
+        node.offset,
       );
     }
 
@@ -601,7 +601,7 @@ export class Compiler {
     if (!func) {
       throw new CompilerError(
         "If statement outside of a function",
-        node.offset
+        node.offset,
       );
     }
 
@@ -615,7 +615,7 @@ export class Compiler {
       if (condition !== BuiltInTypes.bool) {
         throw new CompilerError(
           `Invalid type "${condition}" as conditional expression`,
-          node.condition.offset
+          node.condition.offset,
         );
       }
     }
@@ -651,7 +651,7 @@ export class Compiler {
     if (!this.#scope) {
       throw new CompilerError(
         "No active scope for variable declaration compilation",
-        node.offset
+        node.offset,
       );
     }
 
@@ -659,8 +659,8 @@ export class Compiler {
 
     if (!local) {
       throw new CompilerError(
-        `Variable "${node.name}" not found in scope during compilation`,
-        node.offset
+        `Variable "${node.name}" not found in scope`,
+        node.offset,
       );
     }
 
@@ -672,7 +672,7 @@ export class Compiler {
       if (type !== node.type) {
         throw new CompilerError(
           `Type mismatch in assignment to "${node.name}": expected ${node.type.kind}, got ${type.kind}`,
-          node.offset
+          node.offset,
         );
       }
 
@@ -684,8 +684,8 @@ export class Compiler {
 
       if (!object) {
         throw new CompilerError(
-          `Object "${node.type.name}" not found in scope during compilation`,
-          node.offset
+          `Object "${node.type.name}" not found in scope`,
+          node.offset,
         );
       }
 
@@ -704,22 +704,22 @@ export class Compiler {
     if (!this.#scope) {
       throw new CompilerError(
         "No active scope for variable declaration compilation",
-        node.offset
+        node.offset,
       );
     }
     const symbol = this.#scope.resolve(node.name);
 
     if (!symbol) {
       throw new CompilerError(
-        `Variable "${node.name}" not found in scope during compilation`,
-        node.offset
+        `Variable "${node.name}" not found in scope`,
+        node.offset,
       );
     }
 
     if (type !== symbol.type) {
       throw new CompilerError(
         `Type mismatch in assignment to "${node.name}": expected ${symbol.type.kind}, got ${type.kind}`,
-        node.offset
+        node.offset,
       );
     }
 
@@ -767,7 +767,7 @@ export class Compiler {
       default:
         throw new CompilerError(
           `Invalid node type for expression: ${node.kind}`,
-          node.offset
+          node.offset,
         );
     }
   }
@@ -783,7 +783,7 @@ export class Compiler {
     if (!func) {
       throw new CompilerError(
         `Call to undeclared function: ${node.callee}`,
-        node.offset
+        node.offset,
       );
     }
 
@@ -799,7 +799,7 @@ export class Compiler {
         if (type !== param.type) {
           throw new CompilerError(
             `Type mismatch in call to "${node.callee}": expected ${param.type.kind}, got ${type.kind} for argument ${i}`,
-            arg.offset
+            arg.offset,
           );
         }
       });
@@ -811,7 +811,7 @@ export class Compiler {
     if (node.args.length !== func.params.length) {
       throw new CompilerError(
         `Wrong number of arguments for function "${node.callee}"`,
-        node.offset
+        node.offset,
       );
     }
 
@@ -823,7 +823,7 @@ export class Compiler {
       if (type !== param.type) {
         throw new CompilerError(
           `Type mismatch in call to "${node.callee}": expected ${param.type.kind}, got ${type.kind} for argument ${i}`,
-          arg.offset
+          arg.offset,
         );
       }
 
@@ -839,7 +839,7 @@ export class Compiler {
     if (left !== right) {
       throw new CompilerError(
         `Type mismatch for "${node.operator}" operator: ${left.kind} and ${right.kind}`,
-        node.offset
+        node.offset,
       );
     }
 
@@ -854,7 +854,7 @@ export class Compiler {
     if (!isNumericType(type)) {
       throw new CompilerError(
         `Type mismatch for "${node.operator}" operator: ${type.kind}`,
-        node.offset
+        node.offset,
       );
     }
 
@@ -865,7 +865,7 @@ export class Compiler {
         if (!symbol) {
           throw new CompilerError(
             `Identifier "${node.expression.name}" not found in scope`,
-            node.offset
+            node.offset,
           );
         }
 
@@ -894,12 +894,12 @@ export class Compiler {
         const field = this.#struct(
           node.expression.object,
           node.expression.member,
-          node.expression.offset
+          node.expression.offset,
         );
 
         const address = this.#locals.tmp(
           BuiltInTypes.int,
-          node.expression.offset
+          node.expression.offset,
         );
         const value = this.#locals.tmp(field.type, node.expression.offset);
 
@@ -933,7 +933,7 @@ export class Compiler {
       default:
         throw new CompilerError(
           `Type mismatch for "${node.operator}" operator: ${type.kind}`,
-          node.offset
+          node.offset,
         );
     }
   }
@@ -944,7 +944,7 @@ export class Compiler {
     if (condition !== BuiltInTypes.bool) {
       throw new CompilerError(
         `Invalid type "${condition}" as conditional expression`,
-        node.expression.offset
+        node.expression.offset,
       );
     }
 
@@ -953,7 +953,7 @@ export class Compiler {
     if (!isValidType(type)) {
       throw new CompilerError(
         `Invalid result type "${type.kind}" for unary expression`,
-        node.offset
+        node.offset,
       );
     }
 
@@ -967,7 +967,7 @@ export class Compiler {
     if (condition !== BuiltInTypes.bool) {
       throw new CompilerError(
         `Invalid type "${condition}" as conditional expression`,
-        node.condition.offset
+        node.condition.offset,
       );
     }
 
@@ -976,7 +976,7 @@ export class Compiler {
     if (!isValidType(type)) {
       throw new CompilerError(
         `Invalid result type "${type.kind}" for ternary expression`,
-        node.offset
+        node.offset,
       );
     }
 
@@ -994,8 +994,8 @@ export class Compiler {
   #compileIdentifier(node: Identifier) {
     if (!this.#scope) {
       throw new CompilerError(
-        "No active scope for identifier compilation.",
-        node.offset
+        "No active scope for identifier compilation",
+        node.offset,
       );
     }
 
@@ -1003,8 +1003,8 @@ export class Compiler {
 
     if (!symbol) {
       throw new CompilerError(
-        `Identifier '${node.name}' not found in scope.`,
-        node.offset
+        `Identifier "${node.name}" not found in scope`,
+        node.offset,
       );
     }
     this.#emitLoadLocal(symbol.mangled);
@@ -1025,7 +1025,7 @@ export class Compiler {
     if (!info) {
       throw new CompilerError(
         `String literal "${node.value}" not found in collected literals`,
-        node.offset
+        node.offset,
       );
     }
 
@@ -1045,7 +1045,7 @@ export class Compiler {
           this.#compileExpression(part);
         } else {
           this.#compileFormattedExpression(
-            new FormattedExpression(part, DEFAULT_FORMAT, part.offset)
+            new FormattedExpression(part, DEFAULT_FORMAT, part.offset),
           );
         }
       }
@@ -1060,7 +1060,7 @@ export class Compiler {
     if (!isNumericType(type)) {
       throw new CompilerError(
         `Invalid type "${type.kind}" for formatting`,
-        node.offset
+        node.offset,
       );
     }
 
@@ -1098,7 +1098,7 @@ export class Compiler {
     if (!this.#scope) {
       throw new CompilerError(
         "No active scope for type inference",
-        node.offset
+        node.offset,
       );
     }
 
@@ -1119,7 +1119,7 @@ export class Compiler {
         if (!symbol) {
           throw new CompilerError(
             `Identifier "${node.name}" not found for type inference`,
-            node.offset
+            node.offset,
           );
         }
         return symbol.type;
@@ -1130,7 +1130,7 @@ export class Compiler {
         if (!func) {
           throw new CompilerError(
             `Cannot infer return type for call to undeclared function "${node.callee}"`,
-            node.offset
+            node.offset,
           );
         }
         return func.type!;
@@ -1139,15 +1139,15 @@ export class Compiler {
 
         if (!symbol) {
           throw new CompilerError(
-            `Field "${node.object}" not found in scope during compilation`,
-            node.offset
+            `Struct "${node.object}" not found in scope`,
+            node.offset,
           );
         }
 
         if (symbol.type.kind !== TypeKinds.STRUCT) {
           throw new CompilerError(
             `Cannot assign to field "${node.member}" of non-object variable "${node.object}"`,
-            node.offset
+            node.offset,
           );
         }
 
@@ -1155,8 +1155,8 @@ export class Compiler {
 
         if (!object) {
           throw new CompilerError(
-            `Object "${symbol.type.name}" not found in scope during compilation`,
-            node.offset
+            `Object "${symbol.type.name}" not found in scope`,
+            node.offset,
           );
         }
 
@@ -1165,7 +1165,7 @@ export class Compiler {
         if (!member) {
           throw new CompilerError(
             `Struct "${node.object}" has no field named "${node.member}"`,
-            node.offset
+            node.offset,
           );
         }
         return member.type;
@@ -1185,7 +1185,7 @@ export class Compiler {
             if (!WASM_OPERATION_OPERANDS[node.operator]?.includes(type)) {
               throw new CompilerError(
                 `Invalid type for "${node.operator}" operation: ${type.kind}`,
-                node.offset
+                node.offset,
               );
             }
             return type;
@@ -1205,7 +1205,7 @@ export class Compiler {
         if (left !== right) {
           throw new CompilerError(
             `Type mismatch for ternary operator: ${left.kind} and ${right.kind}`,
-            node.offset
+            node.offset,
           );
         }
         return left;
@@ -1213,7 +1213,7 @@ export class Compiler {
       default:
         throw new CompilerError(
           `Cannot infer type for node: ${node.kind}`,
-          node.offset
+          node.offset,
         );
     }
   }
