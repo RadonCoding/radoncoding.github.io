@@ -17,7 +17,7 @@ export const TokenTypes = {
   LT: "<",
   GT: ">",
   INCREMENT: "++",
-  PLUS_EQUAL: "+",
+  PLUS_EQUAL: "+=",
   PLUS: "+",
   DECREMENT: "--",
   MINUS_EQUAL: "-=",
