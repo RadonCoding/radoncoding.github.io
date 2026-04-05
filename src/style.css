@@ -41,7 +41,7 @@ main {
   height: 100vh;
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1023px) {
   main {
     flex-direction: column;
   }
@@ -263,7 +263,7 @@ main {
   pointer-events: none;
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1023px) {
   .portfolio {
     flex: 4 1 0;
   }

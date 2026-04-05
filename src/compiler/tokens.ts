@@ -17,7 +17,7 @@ export const TokenTypes = {
   LT: "<",
   GT: ">",
   INCREMENT: "++",
-  PLUS_EQUAL: "+",
+  PLUS_EQUAL: "+=",
   PLUS: "+",
   DECREMENT: "--",
   MINUS_EQUAL: "-=",
@@ -49,7 +49,7 @@ export const TokenTypes = {
 } as const;
 
 export const TokenTypeNames = Object.fromEntries(
-  Object.entries(TokenTypes).map(([key, value]) => [value, key])
+  Object.entries(TokenTypes).map(([key, value]) => [value, key]),
 ) as Record<
   (typeof TokenTypes)[keyof typeof TokenTypes],
   keyof typeof TokenTypes
@@ -119,7 +119,7 @@ export class Tokenizer {
           `Unexpected token "${text[this.#offset + index]}" at offset ${
             this.#offset + index
           }`,
-          this.#offset + index
+          this.#offset + index,
         );
       }
     }
@@ -128,7 +128,7 @@ export class Tokenizer {
 
 export function tokenize(
   text: string,
-  options?: { offset?: number }
+  options?: { offset?: number },
 ): Generator<Token, void, unknown> {
   const tokenizer = new Tokenizer(
     [
@@ -212,7 +212,7 @@ export function tokenize(
         extractor: (match) => match,
       },
     ],
-    options?.offset
+    options?.offset,
   );
   return tokenizer.tokenize(text);
 }
