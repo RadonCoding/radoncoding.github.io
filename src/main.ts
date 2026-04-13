@@ -4,10 +4,10 @@ for (const element of document.getElementsByClassName("copy")) {
   if (!(element instanceof HTMLElement)) continue;
 
   element.addEventListener("click", () => {
-    const text = element.getAttribute("data-text");
+    const content = element.getAttribute("data-copy");
 
-    if (!text) return;
+    if (!content) return;
 
-    navigator.clipboard.writeText(text);
+    navigator.clipboard.writeText(content);
   });
 }

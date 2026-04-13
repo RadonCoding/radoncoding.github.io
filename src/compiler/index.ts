@@ -6,21 +6,21 @@ import { highlight, showErrorTooltip } from "./syntax";
 import example from "../assets/example.rn?raw";
 
 async function compile() {
-  const inputElement = document.getElementById("compiler-input")!;
-  const outputElement = document.getElementById("compiler-output")!;
+  const input = document.getElementById("compiler-input")!;
+  const output = document.getElementById("compiler-console")!;
 
   function clearOutput() {
-    outputElement.innerText = "";
+    output.innerText = "";
   }
 
   function writeToOutput(text: string) {
-    outputElement.innerText += text;
-    outputElement.innerText += "\n";
+    output.innerText += text;
+    output.innerText += "\n";
   }
 
   clearOutput();
 
-  const code = inputElement.innerText!;
+  const code = input.innerText;
 
   try {
     const tokens = tokenize(code);
@@ -69,38 +69,35 @@ async function compile() {
       err instanceof WebAssembly.CompileError ||
       err instanceof WebAssembly.RuntimeError
     ) {
-      showErrorTooltip(inputElement, err.message, code.length - 1);
+      showErrorTooltip(input, err.message, code.length - 1);
     }
 
     if (err instanceof LanguageError) {
-      showErrorTooltip(inputElement, err.message, err.offset);
+      showErrorTooltip(input, err.message, err.offset);
     }
   }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("compile-button")!.addEventListener("click", compile);
+  document.getElementById("compile-button")?.addEventListener("click", compile);
 
-  const inputElement = document.getElementById("compiler-input")!;
-  inputElement.innerText = example;
+  const input = document.getElementById("compiler-input");
 
-  highlight(inputElement);
+  if (!input) return;
 
-  inputElement.addEventListener("input", () => highlight(inputElement));
+  input.innerText = example;
 
-  let isCollapsed = false;
+  highlight(input);
+
+  input.addEventListener("input", () => highlight(input));
+
   const toggle = document.getElementById("toggle-output")!;
+  const container = document.getElementById("compiler-output")!;
+
   toggle.addEventListener("click", () => {
-    const output = document.getElementById("output-section")!;
-
-    isCollapsed = !isCollapsed;
-
-    if (isCollapsed) {
-      output.classList.add("collapsed");
-      toggle.innerHTML = '<i class="fas fa-chevron-up"></i>';
-    } else {
-      output.classList.remove("collapsed");
-      toggle.innerHTML = '<i class="fas fa-chevron-down"></i>';
-    }
+    const collapsed = container.classList.toggle("compiler__output--collapsed");
+    toggle.innerHTML = collapsed
+      ? '<i class="bi bi-chevron-up"></i>'
+      : '<i class="bi bi-chevron-down"></i>';
   });
 });
