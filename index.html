@@ -1,7 +1,9 @@
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
@@ -11,67 +13,74 @@
       href="https://avatars.githubusercontent.com/u/86915746?v=4"
     />
     <title>RadonCoding</title>
-    <script type="module" crossorigin src="/assets/index-DC7nhvL-.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-HisIDPN0.css">
+    <script type="module" crossorigin src="/assets/index-D9gcAzAy.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-Bhq8WC2p.css">
   </head>
   <body>
     <main>
-      <div class="portfolio">
+      <section id="portfolio">
         <img
-          class="profile"
+          class="portfolio__profile"
           src="https://avatars.githubusercontent.com/u/86915746?v=4"
+          alt="Profile"
         />
-        <div class="details">
-          <h2>RadonCoding</h2>
-          <pre class="comment">
+        <div class="portfolio__details">
+          <h1 class="portfolio__title">RadonCoding</h1>
+          <pre class="portfolio__comment">
 /**
  * - Full-stack developer
  * - Reverse engineer
  *
  * - Languages I use often:
- *    C/C++, C#, Rust, Java, 
- *    TypeScript, Python, Go
+ *     C/C++, C#, Rust, Java, 
+ *     TypeScript, Python, Go
  *
  */</pre
           >
         </div>
-        <div class="contacts">
-          <a class="tooltip" href="https://github.com/RadonCoding">
+        <nav class="portfolio__contacts">
+          <a class="portfolio__contact" href="https://github.com/RadonCoding">
             <i class="bi bi-github"></i>
-            <span class="tooltip-text">Open GitHub</span>
+            <span class="portfolio__contact-content">Open GitHub</span>
           </a>
-          <a class="tooltip copy" data-text="radonreborn">
+          <a
+            class="portfolio__contact portfolio__contact--copy"
+            data-copy="radonreborn"
+          >
             <i class="bi bi-discord"></i>
-            <span class="tooltip-text">Copy Username</span>
+            <span class="portfolio__contact-content">Copy Username</span>
           </a>
-        </div>
-      </div>
-      <div class="container">
+        </nav>
+      </section>
+
+      <section id="workspace">
         <div class="compiler">
-          <header>
-            Compiler
-            <a id="compile-button"><i class="bi bi-gear-fill"></i></a>
+          <header class="compiler__header">
+            <span class="compiler__title">Compiler</span>
+            <button id="compile-button" aria-label="Compile">
+              <i class="bi bi-gear-fill"></i>
+            </button>
           </header>
-          <div id="error-tooltip" class="error-tooltip"></div>
-          <div class="compiler-io">
-            <pre
-              id="compiler-input"
-              contenteditable="true"
-              spellcheck="false"
-              class="io"
-            ></pre>
-            <div class="output-section" id="output-section">
-              <div class="output-header">
-                <span class="output-title">Output</span>
-                <button class="toggle" id="toggle-output">
-                  <i class="fas fa-chevron-down"></i>
-                </button>
-              </div>
-              <div id="compiler-output" class="io" readonly></div>
+
+          <div id="error-tooltip"></div>
+
+          <pre
+            id="compiler-input"
+            contenteditable="true"
+            spellcheck="false"
+          ></pre>
+
+          <div id="compiler-output" class="compiler__output">
+            <div class="compiler__output-header">
+              <span class="compiler__output-label">Output</span>
+              <button id="toggle-output" aria-label="Toggle Output">
+                <i class="bi bi-chevron-down"></i>
+              </button>
             </div>
+            <div id="compiler-console"></div>
           </div>
         </div>
-      </div>
+      </section>
     </main>
   </body>
 </html>
