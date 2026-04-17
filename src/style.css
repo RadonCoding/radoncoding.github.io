@@ -232,6 +232,7 @@ section {
 }
 
 .portfolio__contact {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -260,11 +261,11 @@ section {
   bottom: 125%;
   left: 50%;
   transform: translateX(-50%);
-  padding: var(--space-3xs);
+  padding: var(--space-2xs) var(--space-xs);
   font-size: var(--text-3xs);
   color: var(--fg-color-primary);
   background-color: var(--accent-color-secondary);
-  border-radius: var(--rounded-3xs);
+  border-radius: var(--rounded-xs);
   visibility: hidden;
   white-space: nowrap;
   z-index: 10;
