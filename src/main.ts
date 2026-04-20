@@ -4,19 +4,13 @@ const tooltip = document.createElement("div");
 tooltip.id = "tooltip";
 document.body.appendChild(tooltip);
 
-let tooltipTimeout: ReturnType<typeof setTimeout>;
-
-const update = (el: HTMLElement) => {
-  const rect = el.getBoundingClientRect();
-  tooltip.style.left = `${rect.left + window.scrollX + rect.width / 2}px`;
-  tooltip.style.top = `${rect.top + window.scrollY}px`;
-};
+let timeout: ReturnType<typeof setTimeout>;
 
 for (const element of document.querySelectorAll<HTMLElement>(
   "[data-tooltip]",
 )) {
   element.addEventListener("click", (event) => {
-    clearTimeout(tooltipTimeout);
+    clearTimeout(timeout);
 
     const content = element.getAttribute("data-tooltip");
     const copy = element.getAttribute("data-copy");
@@ -24,7 +18,10 @@ for (const element of document.querySelectorAll<HTMLElement>(
 
     tooltip.textContent = content;
     tooltip.classList.add("tooltip--visible");
-    update(element);
+
+    const rect = element.getBoundingClientRect();
+    tooltip.style.left = `${rect.left + window.scrollX + rect.width / 2}px`;
+    tooltip.style.top = `${rect.top + window.scrollY}px`;
 
     element.setAttribute("data-state", "success");
 
@@ -32,7 +29,7 @@ for (const element of document.querySelectorAll<HTMLElement>(
       element.removeAttribute("data-state");
     }, 1000);
 
-    tooltipTimeout = setTimeout(() => {
+    timeout = setTimeout(() => {
       tooltip.classList.remove("tooltip--visible");
     }, 1000);
 
