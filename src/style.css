@@ -237,14 +237,14 @@ section {
   align-items: center;
   justify-content: center;
   position: relative;
-  font-size: var(--icon-sm);
-  padding: var(--space-2xs);
+  width: var(--thumbnail-sm);
+  height: var(--thumbnail-sm);
   border-radius: 50%;
   border: var(--line-sm) solid var(--fg-color-secondary);
   color: var(--fg-color-primary);
   cursor: pointer;
   text-decoration: none;
-  aspect-ratio: 1 / 1;
+  container-type: size;
   transition: all 0.2s ease-in-out;
 }
 
@@ -253,6 +253,11 @@ section {
 }
 
 .portfolio__contact i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 60cqmin;
+  line-height: 1;
   transition: all 0.2s ease-in-out;
 }
 
@@ -260,14 +265,14 @@ section {
   position: absolute;
   bottom: 125%;
   left: 50%;
-  transform: translateX(-50%);
   padding: var(--space-2xs) var(--space-xs);
-  font-size: var(--text-3xs);
+  font-size: var(--text-xs);
   color: var(--fg-color-primary);
   background-color: var(--accent-color-secondary);
   border-radius: var(--rounded-xs);
   visibility: hidden;
   white-space: nowrap;
+  transform: translateX(-50%);
   z-index: 10;
 }
 
@@ -512,7 +517,12 @@ section {
   }
 
   .portfolio__contact {
-    font-size: var(--icon-xl);
+    width: var(--thumbnail-md);
+    height: var(--thumbnail-md);
+  }
+
+  .portfolio__contact-content {
+    font-size: var(--text-xl);
   }
 
   .compiler__header {
