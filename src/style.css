@@ -270,14 +270,13 @@ section {
   color: var(--fg-color-primary);
   background-color: var(--accent-color-secondary);
   border-radius: var(--rounded-xs);
-  visibility: hidden;
   white-space: nowrap;
+  opacity: 0;
   transform: translateX(-50%);
-  z-index: 10;
 }
 
 .portfolio__contact:hover .portfolio__contact-content {
-  visibility: visible;
+  opacity: 1;
 }
 
 .portfolio__contact--copy:active {
@@ -392,8 +391,8 @@ section {
   font-size: var(--text-3xs);
   color: white;
   background: var(--bad-color);
-  z-index: 1000;
   pointer-events: none;
+  z-index: 1000;
 }
 
 /* SYNTAX HIGHLIGHTING */
