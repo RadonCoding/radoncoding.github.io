@@ -245,6 +245,7 @@ section {
   cursor: pointer;
   text-decoration: none;
   container-type: size;
+  overflow: visible;
   transition: all 0.2s ease-in-out;
 }
 
@@ -272,11 +273,17 @@ section {
   border-radius: var(--rounded-xs);
   white-space: nowrap;
   opacity: 0;
-  transform: translateX(-50%);
+  visibility: hidden;
+  transform: translateX(-50%) translateY(var(--space-3xs));
+  transition: all 0.2s ease-in-out;
+  pointer-events: none;
 }
 
-.portfolio__contact:hover .portfolio__contact-content {
+.portfolio__contact:hover .portfolio__contact-content,
+.portfolio__contact:focus .portfolio__contact-content {
   opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
 }
 
 .portfolio__contact--copy:active {
