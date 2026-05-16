@@ -1,32 +1,37 @@
-name: Deploy to GitHub Pages
+name: Deploy
 
 on:
   push:
     branches: [main]
 
-permissions:
-  contents: write
-
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: checkout code
-        uses: actions/checkout@v3
-
-      - name: set up node
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: 18
-
-      - name: install dependencies
+          node-version: '18'
+      - name: Install dependencies
         run: npm install
-
-      - name: build
+      - name: Run build
         run: npm run build
-
-      - name: deploy
+      - uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: ./dist
+          
+  deploy:
+    needs: [build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: dist
+          path: ./dist
+      - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
